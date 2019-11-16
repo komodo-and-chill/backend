@@ -40,7 +40,7 @@ module.exports = class Server {
       for (const verb of ['get', 'put', 'post', 'del']) {
         if (route.hasOwnProperty(verb)) {
           console.log(`Adding route "${verb} ${route.route}"`);
-          api[verb](route.route, (req, res, next) => route[verb]({api, req, res, next}));
+          api[verb](route.route, (req, res, next) => route[verb]({server: this, req, res, next}));
         }
       }
     }
@@ -54,12 +54,11 @@ module.exports = class Server {
     console.log('Setting up database');
     const db = this.db = new sqlite.Database(':memory:');
     db.serialize(() => {
-      db.run('CREATE TABLE test (info TEXT)');
-      const statement = db.prepare('INSERT INTO test VALUES (?)');
-      for (const val of ['Hello', 'World']) {
-        statement.run(val);
-      }
-      statement.finalize();
+      db.run(`CREATE TABLE Users (
+        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        Email varchar(255) UNIQUE NOT NULL,
+        Password varchar(255) NOT NULL
+      )`);
     });
   }
 }
