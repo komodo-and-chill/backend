@@ -1,5 +1,5 @@
 module.exports = {
-  'route': '/api/activities',
+  'route': '/api/users/:user_id/activities',
   post({server, req, res, next}) {
     const { description, points, user_id } = req.params;
     
