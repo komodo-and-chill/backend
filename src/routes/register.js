@@ -6,16 +6,15 @@ module.exports = {
       return res.json(400, { message: 'Email and password required' });
     }
 
-    const statement = server.db.prepare('INSERT INTO Users VALUES (NULL, ?, ?)');
-
-    statement.run(email, password, err => {
+    server.db.run('INSERT INTO Users VALUES (NULL, ?, ?);', email, password, err => {
       if (err) {
         return res.json(400, { message: err.toString() });
       } else {
-        return res.json({ message: 'Registered' });
+        server.db.get('SELECT * FROM Users WHERE email=?', email, (err, user) => {
+          res.json({ message: 'Successfully registered!', user });
+          return next();
+        })
       }
     });
-
-    return next();
   }
 }
