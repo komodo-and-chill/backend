@@ -1,6 +1,6 @@
 module.exports = {
-  'route': '/api/test',
-  get({req, res, next}) {
+  'route': '/api/register',
+  post({api, req, res, next}) {
     res.json({
       message: 'Hello this is a test!'
     });
