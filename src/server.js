@@ -60,6 +60,13 @@ module.exports = class Server {
         email varchar(255) UNIQUE NOT NULL,
         password varchar(255) NOT NULL
       )`);
+
+      db.run(`CREATE TABLE Activities (
+        user_id INTEGER,
+        description VARCHAR(255) NOT NULL,
+        points INTEGER NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES Users(id)
+      )`);
     });
   }
 }
