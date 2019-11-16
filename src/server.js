@@ -5,7 +5,8 @@ const corsMiddleware = require('restify-cors-middleware');
 const ROUTES = [
   'test',
   'register',
-  'login'
+  'login',
+  'activities'
 ];
 
 module.exports = class Server {
@@ -33,7 +34,7 @@ module.exports = class Server {
     api.pre(cors.preflight);
     api.use(cors.actual);
     api.use(restify.plugins.acceptParser(api.acceptable));
-    api.use(restify.plugins.queryParser());
+    api.use(restify.plugins.queryParser({ mapParams: true }));
     api.use(restify.plugins.bodyParser());
 
     for (const routeFileName of ROUTES) {
@@ -62,7 +63,7 @@ module.exports = class Server {
       )`);
 
       db.run(`CREATE TABLE Activities (
-        user_id INTEGER,
+        user_id INTEGER NOT NULL,
         description VARCHAR(255) NOT NULL,
         points INTEGER NOT NULL,
         FOREIGN KEY(user_id) REFERENCES Users(id)
