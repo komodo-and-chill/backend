@@ -5,6 +5,7 @@ const corsMiddleware = require('restify-cors-middleware');
 const ROUTES = [
   'test',
   'register',
+  'login'
 ];
 
 module.exports = class Server {
@@ -55,9 +56,9 @@ module.exports = class Server {
     const db = this.db = new sqlite.Database(':memory:');
     db.serialize(() => {
       db.run(`CREATE TABLE Users (
-        ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        Email varchar(255) UNIQUE NOT NULL,
-        Password varchar(255) NOT NULL
+        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        email varchar(255) UNIQUE NOT NULL,
+        password varchar(255) NOT NULL
       )`);
     });
   }
