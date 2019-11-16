@@ -1,6 +1,7 @@
 // Test to check restify is working:
 
 const restify = require('restify');
+const Server = require('./server');
 
 const server = restify.createServer({
   name: 'komodo-and-chill',
@@ -24,6 +25,8 @@ for (const routeFileName of routes) {
     }
   }
 }
+
+const test = new Server();
 
 server.get('/api/echo/:name', (req, res, next) => {
   res.send("Hello your name is " + req.params.name);
