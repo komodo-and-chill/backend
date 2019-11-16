@@ -22,7 +22,8 @@ module.exports = {
     const { user_id } = req.params;
 
     server.db.all('SELECT * FROM Activities WHERE user_id=?', +user_id, (err, activities) => {
-      res.json({ activities });
+      points = activities.reduce((acc, activity) => acc + activity.points, 0);
+      res.json({ points, activities });
       next();
     });
   }
