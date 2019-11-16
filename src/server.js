@@ -1,8 +1,10 @@
 const sqlite = require('sqlite3').verbose();
 const restify = require('restify');
+const corsMiddleware = require('restify-cors-middleware');
 
 const ROUTES = [
-  'test'
+  'test',
+  'register',
 ];
 
 module.exports = class Server {
@@ -20,6 +22,15 @@ module.exports = class Server {
       version: '1.0.0'
     });
 
+    const cors = corsMiddleware({
+      preflightMaxAge: 5,
+      origins: ['*'],
+      allowHeaders:['X-App-Version'],
+      exposeHeaders:[]
+    });
+
+    api.pre(cors.preflight);
+    api.use(cors.actual);
     api.use(restify.plugins.acceptParser(api.acceptable));
     api.use(restify.plugins.queryParser());
     api.use(restify.plugins.bodyParser());

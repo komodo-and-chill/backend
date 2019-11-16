@@ -1,9 +1,7 @@
 module.exports = {
   'route': '/api/register',
   post({api, req, res, next}) {
-    res.json({
-      message: 'Hello this is a test!'
-    });
+    console.log(req.params);
     return next();
   }
 }

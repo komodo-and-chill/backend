@@ -18,6 +18,7 @@
   "homepage": "https://github.com/komodo-and-chill/backend#readme",
   "dependencies": {
     "restify": "^8.4.0",
+    "restify-cors-middleware": "^1.1.1",
     "sqlite3": "^4.1.0"
   }
 }
