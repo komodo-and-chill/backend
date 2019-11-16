@@ -7,8 +7,6 @@ module.exports = {
       return res.json(400, { message: 'Description/points/userid required' });
     }
 
-    console.log(+user_id, description, +points);
-
     server.db.run('INSERT INTO Activities VALUES (?, ?, ?)', +user_id, description, +points, err => {
       if (err) {
         return res.json(400, { message: err.toString() });
