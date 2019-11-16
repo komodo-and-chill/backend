@@ -6,7 +6,8 @@ const ROUTES = [
   'test',
   'register',
   'login',
-  'activities'
+  'activities',
+  'commute'
 ];
 
 module.exports = class Server {
@@ -35,7 +36,7 @@ module.exports = class Server {
     api.use(cors.actual);
     api.use(restify.plugins.acceptParser(api.acceptable));
     api.use(restify.plugins.queryParser({ mapParams: true }));
-    api.use(restify.plugins.bodyParser());
+    api.use(restify.plugins.bodyParser({ mapParams: true }));
 
     for (const routeFileName of ROUTES) {
       const route = require(`./routes/${routeFileName}`);

@@ -1,29 +1,24 @@
 const config = require('../config/config');
-const googleMapsCLient = require('@google/maps').createClient({
-    key: config.google_api_key
+const client = require('@google/maps').createClient({
+  key: config.google_api_key,
+  Promise
 });
 
-async function getDirections(origin, destination) {
-    // return the direction response for travel between [origin] and [destination] by transit
+exports.getInfo = async function getInfo(origin, destination) {
+  const promises = ['walking', 'driving', 'transit'].map(mode => getInfoForMode(origin, destination, mode));
+  const [walking, driving, transit] = await Promise.all(promises);
+  return { walking, driving, transit };
+}
 
-    let response = await googleMapsCLient.directions({
-        origin: origin,
-        destination: destination,
-        units: 'metric',
-        mode: 'transit'
-    });
-    
-    if(response.json.status == 'OK') {
-        let responseJson = response.json;
-        let costs = responseJson.routes.map((route) => {
-            // TODO make a better cost function
-            route.legs.map((leg) => leg.distance.value).reduce((acc, dist) => acc + dist);
-        });
-        let minCost = Math.min(costs);
-        let indexOfBest = costs.indexOf(minCost);
-        let bestRoute = responseJson.routes[indexOfBest];
-        return bestRoute;
-    } else {
-        return null;
-    }
+async function getInfoForMode(origin, destination, mode) {
+  const { json } = await client.distanceMatrix({
+    origins: [origin],
+    destinations: [destination],
+    mode,
+  }).asPromise();
+  const data = json.rows[0].elements[0];
+  return {
+    distance: data.distance.text,
+    duration: data.duration.text,
+  };
 }
