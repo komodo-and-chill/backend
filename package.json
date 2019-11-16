@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/komodo-and-chill/backend/issues"
   },
-  "homepage": "https://github.com/komodo-and-chill/backend#readme"
+  "homepage": "https://github.com/komodo-and-chill/backend#readme",
+  "dependencies": {
+    "restify": "^8.4.0"
+  }
 }
